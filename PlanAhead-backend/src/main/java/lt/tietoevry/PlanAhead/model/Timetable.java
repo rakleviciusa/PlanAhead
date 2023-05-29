@@ -6,7 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.util.Date;
+import java.time.LocalDate;
+
 
 @Entity
 @Table(name = "times")
@@ -20,7 +21,7 @@ public class Timetable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String date;
+    private LocalDate date;
 
     private int busyHours;
 
