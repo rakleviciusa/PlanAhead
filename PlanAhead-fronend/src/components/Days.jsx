@@ -1,14 +1,14 @@
 import React, { useState } from 'react'
 
-function BusyDays() {
+function Days() {
 
-    const [dateValue, setDateValue] = useState('')
     const [busyHours, setBusyHours] = useState()
+    const [date, setDate] = useState("")
 
     const postTime = (e) => {
         e.preventDefault()
 
-        const timetable = {dateValue, busyHours}
+        const timetable = {date, busyHours}
 
         fetch("http://localhost:8080/api/addTime", {
             method: "POST",
@@ -18,19 +18,16 @@ function BusyDays() {
             .then(res => res.json())
             .then(data => {
                 console.log(data);
+                window.location.reload(false);
             })
-
-        console.log(dateValue);
     }
-    
-
 
   return (
     <div>
         <form onSubmit={postTime}>
             <label htmlFor="date">
                 Date
-                <input type="date" value={dateValue} onChange={e => setDateValue(e.target.value)}/>
+                <input type="date" value={date} onChange={e => setDate(e.target.value)}/>
             </label>
             
             <label htmlFor="busyHours">
@@ -44,4 +41,4 @@ function BusyDays() {
   )
 }
 
-export default BusyDays
+export default Days
