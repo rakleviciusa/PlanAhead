@@ -8,7 +8,7 @@ function Timetable() {
       .then(res => res.json())
       .then(data => {
         setAllTimes(data);
-        console.log(data.date);
+        console.log(data);
       });
   }, []);
 
