@@ -31,7 +31,7 @@ function Days() {
             </label>
             
             <label htmlFor="busyHours">
-                Busy Hours
+                Busy Hours (Please include sleep time:))
                 <input type="number" value={busyHours} onChange={e => setBusyHours(e.target.value)}/>
             </label>
 

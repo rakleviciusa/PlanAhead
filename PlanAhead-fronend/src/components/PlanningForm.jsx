@@ -6,6 +6,26 @@ function PlanningForm() {
     const [deadlineTime, setDeadlineTime] = useState()
     const [deadlineDate, setDeadlineDate] = useState('')
 
+    let totalTime = 0
+    let totalBusyHours = 0
+    let freeTime = 0
+
+    const currentDate = new Date()
+    const deadlineDateObject = new Date(deadlineDate) 
+
+    function daysCounter(){
+        const timeDiff = Math.abs(deadlineDateObject - currentDate);
+        const leftDays = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+
+        return leftDays
+    }
+
+    function getTotalTime(){
+        for (let i = 0; i < daysCounter(); i++) {
+            totalTime += 24
+        }
+    }
+
     useEffect(() => {
         fetch("http://localhost:8080/api/allTimes")
           .then(res => res.json())
@@ -16,15 +36,43 @@ function PlanningForm() {
 
         const findDate = (e) => {
             e.preventDefault();
-        
-            const foundDate = date.find((item) => item.date === deadlineDate);
 
-            if (foundDate) {
-                console.log('Date found:', foundDate.date);
+            getTotalTime()
+
+                date.forEach( date => {
+                    date.date = new Date(date.date)
+                })
+
+                date.sort((a, b) => a.date - b.date)
+
+                while (currentDate <= deadlineDateObject){
+
+                    const matchingData = date.find(data => isSameDate(data.date, currentDate))
+
+                    if (matchingData){
+                        totalBusyHours += matchingData.busyHours
+                    }
+
+                    currentDate.setDate(currentDate.getDate() + 1);
+                }
+
+            console.log("total: " + totalTime);
+            console.log("busy: " + totalBusyHours);
+            console.log(deadlineTime);
+
+            freeTime = totalTime - totalBusyHours
+
+            if (freeTime >= deadlineTime){
+                console.log("Good to go");
             } else {
-                console.log('Date not found');
+                console.log("You're not making it");
             }
         };
+
+        const isSameDate = (date1, date2) => 
+            date1.getFullYear() === date2.getFullYear() &&
+            date1.getMonth() === date2.getMonth() &&
+            date1.getDate() === date2.getDate();
 
   return (
     <div>
