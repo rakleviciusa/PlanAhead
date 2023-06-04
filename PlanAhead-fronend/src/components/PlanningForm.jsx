@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import DeadlineDates from "./DeadlineDates";
+import '../assets/BusyDays.scss'
 
 function PlanningForm() {
-
   const [timetableDate, setTimetableDate] = useState([]);
   const [deadlineTime, setDeadlineTime] = useState();
   const [deadlineDate, setDeadlineDate] = useState("");
   const [freeDate, setFreeDate] = useState([]);
   const [isDeadlineViable, setIsDeadlineViable] = useState(false);
-  const [isDeadlineSet, setIsDeadlineSet] = useState(false)
+  const [isDeadlineSet, setIsDeadlineSet] = useState(false);
 
   let totalTime = 0;
   let totalBusyHours = 0;
@@ -47,8 +47,6 @@ function PlanningForm() {
       date.date = new Date(date.date);
     });
 
-    // timetableDate.sort((a, b) => a.date - b.date);
-
     while (currentDate <= deadlineDateObject) {
       const matchingData = timetableDate.find((data) =>
         isSameDate(data.date, currentDate)
@@ -60,9 +58,6 @@ function PlanningForm() {
 
       currentDate.setDate(currentDate.getDate() + 1);
     }
-
-    console.log("total: " + totalTime);
-    console.log("busy: " + totalBusyHours);
 
     freeTime = totalTime - totalBusyHours;
 
@@ -83,26 +78,26 @@ function PlanningForm() {
 
     setFreeDate(modifiedDate);
 
-    setIsDeadlineSet(true)
-
+    setIsDeadlineSet(true);
   };
-
-  console.log(freeDate);
 
   const isSameDate = (date1, date2) =>
     date1.getFullYear() === date2.getFullYear() &&
     date1.getMonth() === date2.getMonth() &&
     date1.getDate() === date2.getDate();
 
-
   return (
     <div>
-      <form onSubmit={findDate}>
+        
+      <form onSubmit={findDate} className="form-section busy-form">
+        <h1>PlanAhead</h1>
         <label htmlFor="deadline-time">
-          Work est time
+          Work est time (hours)
           <input
             type="number"
             name="deadlineTime"
+            className="busy-form--input"
+            min="0"
             value={deadlineTime}
             onChange={(e) => setDeadlineTime(e.target.value)}
             required
@@ -114,25 +109,35 @@ function PlanningForm() {
           <input
             type="date"
             name="deadlineDate"
+            className="busy-form--input"
             value={deadlineDate}
             onChange={(e) => setDeadlineDate(e.target.value)}
           />
         </label>
-        <button type="submit">submit</button>
+        <div>
+          <button type="submit">Submit</button>
+          <a href="/planning" className="busy-form--deadline--btn">
+            Set Busy Dates
+          </a>
+        </div>
       </form>
       {isDeadlineSet &&
         (isDeadlineViable ? (
           <div>
-            <p>You will be in time! 🥳</p>
-            <DeadlineDates totalHours={totalTime} totalBusyHours ={totalBusyHours} days ={freeDate} deadlineTime = {deadlineTime}/>
+            <p className="deadline-text">You will be in time! 🥳</p>
+            <DeadlineDates
+              totalHours={totalTime}
+              totalBusyHours={totalBusyHours}
+              days={freeDate}
+              deadlineTime={deadlineTime}
+            />
           </div>
         ) : (
           <div>
-            <p>You won't make it 😖</p>
+            <p className="deadline-text">You won't make it 😖</p>
           </div>
         ))}
-      {!isDeadlineSet && <div>Put Your Deadline info</div>}
-            
+      {!isDeadlineSet && <div className="deadline-text">Please Put Your Deadline Info</div>}
     </div>
   );
 }

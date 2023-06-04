@@ -46,11 +46,10 @@ function DeadlineDates(props) {
     workHours: Math.round(day.workHours * 100) / 100,
   }));
 
-  console.log(daysWithWork);
   return (
-    <div>
+    <div className="timetable-content">
       {daysWithWork.map((date) => (
-        <div key={date.date}>
+        <div key={date.date} className="timetable-content--times">
           <p>Date: {date.date.toISOString().split("T")[0]}</p>
           <p>Work Minutes: {date.workMinutes}</p>
           <p>Work Hours: {date.workHours}</p>
