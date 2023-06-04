@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,6 +30,8 @@ public class TimetableController {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
 
+            times.sort(Comparator.comparing(Timetable::getDate));
+
             return new ResponseEntity<>(times, HttpStatus.OK);
         }
         catch (Exception exception){
@@ -49,9 +52,16 @@ public class TimetableController {
 
     @PostMapping("/addTime")
     public ResponseEntity<Timetable> addTime(@RequestBody Timetable timetable){
-        Timetable timetableObject = timetableRepository.save(timetable);
+        boolean dateExists = timetableRepository.existsByDate(timetable.getDate());
 
-        return new ResponseEntity<>(timetableObject, HttpStatus.OK);
+        if(dateExists){
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        } else {
+            Timetable timetableObject = timetableRepository.save(timetable);
+
+            return new ResponseEntity<>(timetableObject, HttpStatus.OK);
+        }
+
     }
 
     @PostMapping("/updateTimeById/{id}")

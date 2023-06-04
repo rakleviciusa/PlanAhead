@@ -17,25 +17,42 @@ function Days() {
         })
             .then(res => res.json())
             .then(data => {
-                console.log(data);
                 window.location.reload(false);
             })
     }
 
   return (
     <div>
-        <form onSubmit={postTime}>
+        <form onSubmit={postTime} className='busy-form'>
             <label htmlFor="date">
                 Date
-                <input type="date" value={date} onChange={e => setDate(e.target.value)}/>
+                <input 
+                    className='busy-form--input' 
+                    type="date" 
+                    value={date} 
+                    onChange={e => setDate(e.target.value)}
+                    required
+                />
             </label>
             
             <label htmlFor="busyHours">
-                Busy Hours (Please include sleep time:))
-                <input type="number" value={busyHours} onChange={e => setBusyHours(e.target.value)}/>
+                Busy Hours (Please include sleep time 🙂)
+                <input 
+                    className='busy-form--input' 
+                    type="number" 
+                    min="0"
+                    max="24"
+                    value={busyHours} 
+                    onChange={e => setBusyHours(e.target.value)} 
+                    required
+                    placeholder='0'
+                />
             </label>
 
-            <button type='submit'>Submit</button>
+            <div>
+                <button type='submit'>Submit</button>
+                <a href="/planning" className='busy-form--deadline--btn'>Set Deadline</a>
+            </div>
         </form>
     </div>
   )

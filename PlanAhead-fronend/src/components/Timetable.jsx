@@ -13,17 +13,17 @@ function Timetable() {
   }, []);
 
   return (
-    <div>
+    <main className='timetable'>
       <h1>Timetable</h1>
-      <div>
+      <div className='timetable-content'>
         {allTimes.map(timetable => (
-            <div>
-                <p key={timetable.id}>Date: {timetable.date}</p>
-                <p key={timetable.id}>Busy Hours: {timetable.busyHours}</p>
+            <div className='timetable-content--times'>
+                <p key={timetable.id}><span className='text-bold'>Date: </span>{timetable.date}</p>
+                <p key={timetable.id}><span className='text-bold'>Busy Hours: </span>{timetable.busyHours}</p>
             </div>
         ))}
       </div>
-    </div>
+    </main>
   );
 }
 

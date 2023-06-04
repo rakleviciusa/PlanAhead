@@ -6,13 +6,12 @@ import './App.css'
 function App() {
 
   return (
-    <>
-      <h1>PlanAhead</h1>
+    <div className='container'>
       <Routes>
           <Route path='/' element={<Times />}/>
           <Route path='/planning' element={<Planning />}/>
       </Routes>
-    </>
+    </div>
   )
 }
 

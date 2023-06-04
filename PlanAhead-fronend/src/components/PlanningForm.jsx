@@ -5,6 +5,7 @@ function PlanningForm() {
     const [date, setDate] = useState([])
     const [deadlineTime, setDeadlineTime] = useState()
     const [deadlineDate, setDeadlineDate] = useState('')
+    const [freeDate, setFreeDate] = useState([])
 
     let totalTime = 0
     let totalBusyHours = 0
@@ -25,6 +26,7 @@ function PlanningForm() {
             totalTime += 24
         }
     }
+
 
     useEffect(() => {
         fetch("http://localhost:8080/api/allTimes")
@@ -67,6 +69,22 @@ function PlanningForm() {
             } else {
                 console.log("You're not making it");
             }
+
+            const modifiedDate = date
+                .filter(data => data.date <= deadlineDateObject)
+                .map(data => {
+                    return {
+                        ...data, 
+                        freeHours: 24 - data.busyHours
+                    }
+                })
+
+            freeDate.forEach(data => {
+                delete data.busyHours
+            })
+
+            setFreeDate(modifiedDate)
+
         };
 
         const isSameDate = (date1, date2) => 
